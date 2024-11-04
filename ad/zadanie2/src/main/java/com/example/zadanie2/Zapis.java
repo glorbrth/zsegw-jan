@@ -69,10 +69,22 @@ public class Zapis extends Application {
             alert.setTitle("Potwierdzenie");
             alert.setHeaderText("ZAREJSTROWANO:");
             RadioButton selectedRadioButton = (RadioButton) grupaPlec.getSelectedToggle();
-            String plecGroupValue = selectedRadioButton.getText();
+            String plecGroupValue;
+            if (selectedRadioButton != null){
+                plecGroupValue = selectedRadioButton.getText();
+            } else {
+                plecGroupValue = "brak";
+            }
+
 
             ToggleButton selectedReservation = (ToggleButton) groupReservation.getSelectedToggle();
-            String reservationValue = selectedReservation.getText();
+            String reservationValue;
+            if(selectedReservation != null){
+                reservationValue = selectedReservation.getText();
+            } else {
+                reservationValue = "brak";
+            }
+
 
             String technologie = "";
             if(jezykJavaCB.isSelected()) {
@@ -81,13 +93,17 @@ public class Zapis extends Application {
             if (jezykCCB.isSelected()) {
                 technologie += "C";
             }
-            if (technologie == ""){
+            if (technologie.isEmpty()){
                 technologie = "brak";
+            }
+
+            if (imieText.getText().isEmpty()){
+                imieText.setText("brak");
             }
 
             alert.setContentText(
                     "imie: " + imieText.getText() + "\ndata urodzenia: " + wyborDataUrodzin.getValue() + "\nplec: " + plecGroupValue + "\nrezerwacja: " +
-                            reservationValue + "\ntechnologie: " + technologie + "\nkwalifikacje:? " + listaKwalifikacji.getFocusModel() +
+                            reservationValue + "\ntechnologie: " + technologie + "\nkwalifikacje: " + listaKwalifikacji.getFocusModel().getFocusedItem() +
                             "\nlokacja: " + lokacjaCB.getValue()
             );
             alert.show();
