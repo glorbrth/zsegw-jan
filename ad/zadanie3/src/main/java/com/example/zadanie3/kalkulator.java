@@ -12,7 +12,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.nio.DoubleBuffer;
 
 //obramówka -> tytul w obramowce + węzły w obramówce
 class BorderedTitledPane extends StackPane {
@@ -32,7 +31,7 @@ class BorderedTitledPane extends StackPane {
     }
 }
 
-public class HelloApplication extends Application {
+public class kalkulator extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //metoda obliczen
