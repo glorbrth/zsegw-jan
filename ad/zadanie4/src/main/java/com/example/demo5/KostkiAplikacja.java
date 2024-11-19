@@ -22,6 +22,10 @@ public class KostkiAplikacja extends Application {
 
     public void pokazKostki(int liczbaKostek, int game){
         if(liczbaKostek != -1){
+            if(gridPane.getChildren().size() > 3){
+                gridPane.getChildren().remove(3);
+            }
+
             ArrayList<Integer>tablicaKostek = new ArrayList<>();
             ArrayList<Image>tablicaZdjec = new ArrayList<>();
             try {
@@ -46,15 +50,19 @@ public class KostkiAplikacja extends Application {
                 tablicaKostek.add(los);
                 tempTab += los;
                 ImageView kostka = new ImageView(tablicaZdjec.get(los-1));
-                kostka.setFitHeight(20);
-                kostka.setFitWidth(20);
+                kostka.setFitHeight(40);
+                kostka.setFitWidth(40);
                 hBox.getChildren().add(kostka);
             }
 
             Label pkt = new Label();
             pkt.setText(policzPunkty(tablicaKostek));
+            pkt.setStyle("-fx-margin:0");
+            pkt.setStyle("-fx-font-size:30px");
+
 
             hBox.getChildren().add(pkt);
+
 
             gridPane.add(hBox,0,game);
             game++;
@@ -118,7 +126,7 @@ public class KostkiAplikacja extends Application {
         gridPane.add(wyjdzBtn,2,0);
 
 
-        Scene scene = new Scene(gridPane, 320, 240);
+        Scene scene = new Scene(gridPane, 600, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
