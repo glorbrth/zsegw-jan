@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -19,12 +20,13 @@ import java.util.Random;
 
 public class KostkiAplikacja extends Application {
     GridPane gridPane = new GridPane();
+    ScrollPane scrollPane = new ScrollPane();
+    VBox vBox = new VBox();
+    Integer suma = 0;
 
-    public void pokazKostki(int liczbaKostek, int game){
+    public void pokazKostki(int liczbaKostek){
+        HBox hBox = new HBox();
         if(liczbaKostek != -1){
-            if(gridPane.getChildren().size() > 3){
-                gridPane.getChildren().remove(3);
-            }
 
             ArrayList<Integer>tablicaKostek = new ArrayList<>();
             ArrayList<Image>tablicaZdjec = new ArrayList<>();
@@ -39,16 +41,12 @@ public class KostkiAplikacja extends Application {
                 throw new RuntimeException(e);
             }
 
-            HBox hBox = new HBox();
-
             Random random = new Random();
-            String tempTab = "";
 
             for(int i = 0; i<liczbaKostek; i++){
                 int los = random.nextInt(6);
                 los = los + 1;
                 tablicaKostek.add(los);
-                tempTab += los;
                 ImageView kostka = new ImageView(tablicaZdjec.get(los-1));
                 kostka.setFitHeight(40);
                 kostka.setFitWidth(40);
@@ -60,12 +58,14 @@ public class KostkiAplikacja extends Application {
             pkt.setStyle("-fx-margin:0");
             pkt.setStyle("-fx-font-size:30px");
 
+            suma += Integer.parseInt(policzPunkty(tablicaKostek));
 
             hBox.getChildren().add(pkt);
 
+            vBox.getChildren().add(hBox);
 
-            gridPane.add(hBox,0,game);
-            game++;
+            scrollPane.setContent(vBox);
+
         }
     }
 
@@ -90,12 +90,17 @@ public class KostkiAplikacja extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        final int[] game = {1};
+        scrollPane.setPrefSize(500,500);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        Label sumaLabel = new Label(suma.toString());
         //podanie ilosci kosci
         final int[] liczbaKostek = new int[1];
         TextField liczbaKostekField = new TextField();
+        liczbaKostekField.setPrefSize(500,10);
         Button liczbaKostekBtn = new Button("graj");
         liczbaKostekBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+
             if(liczbaKostekField.getText().equals("")){
                 liczbaKostekField.setText("0");
             }
@@ -108,25 +113,28 @@ public class KostkiAplikacja extends Application {
                 liczbaKostek[0] = -1;
                 System.out.println("err");
             } else {
-                pokazKostki(liczbaKostek[0], game[0]);
-                game[0]++;
+                pokazKostki(liczbaKostek[0]);
             }
+            sumaLabel.setText(suma.toString());
         });
 
-        Button wyjdzBtn = new Button("zakoncz");
-        wyjdzBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            ((Stage)(((Button)e.getSource()).getScene().getWindow())).close();
+        Button resetSuma = new Button("reset sumy");
+        resetSuma.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            scrollPane.setContent(null);
+            vBox.getChildren().clear();
+            suma = 0;
+            sumaLabel.setText(suma.toString());
         });
 
-
-
-
+        Label textSuma = new Label("Łączna suma to: ");
         gridPane.add(liczbaKostekField,0,0);
         gridPane.add(liczbaKostekBtn,1,0);
-        gridPane.add(wyjdzBtn,2,0);
+        gridPane.add(resetSuma,2,0);
+        gridPane.add(textSuma,3,0);
+        gridPane.add(sumaLabel,4,0);
+        gridPane.add(scrollPane,0,1);
 
-
-        Scene scene = new Scene(gridPane, 600, 240);
+        Scene scene = new Scene(gridPane, 800, 600);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
