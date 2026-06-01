@@ -1,0 +1,13 @@
+Okno programu podzielone jest na trzy kolumny:
+
+Lewa kolumna (dane wejściowe)
+- Podaj przychód – wpisz miesięczny lub całkowity przychód (liczba całkowita).
+- Podaj oszczędności – kwota, którą chcesz odłożyć.
+- Lista kategorii wydatków
+- W polu tekstowym wpisz nazwę kategorii (np. "Jedzenie", "Rachunki").
+- Kliknij Dodaj kategorię – pojawi się nowy wiersz z polem na kwotę.
+- Wpisz kwotę wydatku w danej kategorii. Kwoty są sumowane automatycznie.
+
+Prawa kolumna - wykres wydatków.
+
+Przycisk eksport do pdf eksportuje oba wykresy do pdf'a.
